@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple MERN CRUD Application</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Main Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <h1 class="logo">MERN Admin Dashboard</h1>
+      <nav class="nav-links">
+        <button class="nav-btn active" id="btn-dashboard" onclick="showSection('dashboard')">Dashboard</button>
+        <button class="nav-btn" id="btn-users" onclick="showSection('users')">Users</button>
+        <button class="nav-btn" id="btn-products" onclick="showSection('products')">Products</button>
+        <button class="nav-btn" id="btn-orders" onclick="showSection('orders')">Orders</button>
+      </nav>
+      <div class="api-status">
+        Status: <span id="status-text" class="status-offline">Offline</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Notification banner -->
+    <div id="toast-banner" class="toast-banner hidden"></div>
+
+    <!-- ================= DASHBOARD SECTION ================= -->
+    <section id="section-dashboard" class="page-section">
+      <h2>Welcome to the Admin Dashboard</h2>
+      <p class="section-desc">Here is a quick summary of the database statistics.</p>
+      
+      <div class="stats-container">
+        <div class="stat-card">
+          <h3>Total Users</h3>
+          <p class="stat-number" id="count-users">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Total Products</h3>
+          <p class="stat-number" id="count-products">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Total Orders</h3>
+          <p class="stat-number" id="count-orders">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Total Revenue</h3>
+          <p class="stat-number" id="count-revenue">₹0</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= USERS SECTION ================= -->
+    <section id="section-users" class="page-section hidden">
+      <div class="section-header">
+        <h2>Manage Users</h2>
+        <button class="action-btn" onclick="openAddUserForm()">+ Add New User</button>
+      </div>
+
+      <!-- Add/Edit User Form Area -->
+      <div id="user-form-container" class="form-container hidden">
+        <h3 id="user-form-title">Add User</h3>
+        <form id="user-form" onsubmit="handleUserSubmit(event)">
+          <input type="hidden" id="user-id">
+          
+          <div class="form-group">
+            <label for="user-name">Full Name:</label>
+            <input type="text" id="user-name" required placeholder="e.g. John Doe">
+          </div>
+          
+          <div class="form-group">
+            <label for="user-email">Email Address:</label>
+            <input type="email" id="user-email" required placeholder="e.g. john@example.com">
+          </div>
+          
+          <div class="form-group">
+            <label for="user-phone">Phone Number:</label>
+            <input type="text" id="user-phone" required placeholder="e.g. 9876543210">
+          </div>
+          
+          <div class="form-group">
+            <label for="user-address">Address:</label>
+            <textarea id="user-address" required placeholder="e.g. 123 Main St, New Delhi"></textarea>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="submit-btn">Save User</button>
+            <button type="button" class="cancel-btn" onclick="closeUserForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Users Table -->
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Address</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <tr><td colspan="5">Loading users...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= PRODUCTS SECTION ================= -->
+    <section id="section-products" class="page-section hidden">
+      <div class="section-header">
+        <h2>Manage Products</h2>
+        <button class="action-btn" onclick="openAddProductForm()">+ Add New Product</button>
+      </div>
+
+      <!-- Add/Edit Product Form Area -->
+      <div id="product-form-container" class="form-container hidden">
+        <h3 id="product-form-title">Add Product</h3>
+        <form id="product-form" onsubmit="handleProductSubmit(event)">
+          <input type="hidden" id="product-id">
+          
+          <div class="form-group">
+            <label for="product-name">Product Name:</label>
+            <input type="text" id="product-name" required placeholder="e.g. Laptop">
+          </div>
+          
+          <div class="form-group">
+            <label for="product-category">Category:</label>
+            <input type="text" id="product-category" required placeholder="e.g. Electronics">
+          </div>
+
+          <div class="form-group">
+            <label for="product-description">Description:</label>
+            <textarea id="product-description" required placeholder="e.g. High performance laptop"></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="product-price">Price (₹):</label>
+            <input type="number" id="product-price" required min="0" step="0.01" placeholder="e.g. 75000">
+          </div>
+          
+          <div class="form-group">
+            <label for="product-quantity">Quantity in Stock:</label>
+            <input type="number" id="product-quantity" required min="0" placeholder="e.g. 10">
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="submit-btn">Save Product</button>
+            <button type="button" class="cancel-btn" onclick="closeProductForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Products Table -->
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="products-table-body">
+            <tr><td colspan="6">Loading products...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= ORDERS SECTION ================= -->
+    <section id="section-orders" class="page-section hidden">
+      <div class="section-header">
+        <h2>Manage Orders</h2>
+        <button class="action-btn" onclick="openAddOrderForm()">+ Create New Order</button>
+      </div>
+
+      <!-- Add/Edit Order Form Area -->
+      <div id="order-form-container" class="form-container hidden">
+        <h3 id="order-form-title">Create Order</h3>
+        <form id="order-form" onsubmit="handleOrderSubmit(event)">
+          <input type="hidden" id="order-id">
+          
+          <div class="form-group">
+            <label for="order-user">Select Customer:</label>
+            <select id="order-user" required>
+              <option value="">-- Choose a user --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Selected Product Lines:</label>
+            <div id="order-products-list">
+              <!-- Dynamically generated product line rows -->
+            </div>
+            <button type="button" class="secondary-btn" onclick="addOrderProductLine()">+ Add Product Line</button>
+          </div>
+          
+          <div class="form-group">
+            <label for="order-total">Total Amount (₹):</label>
+            <input type="number" id="order-total" required min="0" step="0.01" readonly placeholder="Calculated automatically">
+          </div>
+          
+          <div class="form-group">
+            <label for="order-status">Order Status:</label>
+            <select id="order-status">
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+            </select>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="submit-btn">Save Order</button>
+            <button type="button" class="cancel-btn" onclick="closeOrderForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Orders Table -->
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Product Details</th>
+              <th>Total Amount</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="orders-table-body">
+            <tr><td colspan="6">Loading orders...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Simple script loader -->
+  <script src="app.js"></script>
+</body>
+</html>
