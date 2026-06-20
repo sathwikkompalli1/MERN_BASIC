@@ -5,7 +5,6 @@ const createUser = async (userData) => {
     if (!userData.email   || String(userData.email).trim()   === '') throw new Error('email is required');
     if (!userData.phone   || String(userData.phone).trim()   === '') throw new Error('phone is required');
     if (!userData.address || String(userData.address).trim() === '') throw new Error('address is required');
-    // normalise email to lowercase per spec
     userData.email = String(userData.email).toLowerCase().trim();
     return await userModel.createUser(userData);
 };
@@ -21,7 +20,6 @@ const getUserById = async (id) => {
 };
 
 const updateUser = async (id, userData) => {
-    // normalise email if being updated
     if (userData.email) userData.email = String(userData.email).toLowerCase().trim();
     return await userModel.updateUser(id, userData);
 };

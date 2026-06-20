@@ -1,6 +1,5 @@
 const userService = require('../services/user.service');
 
-// POST /api/users — 201
 const createUser = async (req, res) => {
     try {
         const user = await userService.createUser(req.body);
@@ -10,7 +9,6 @@ const createUser = async (req, res) => {
     }
 };
 
-// GET /api/users — 200 array
 const getAllUsers = async (req, res) => {
     try {
         const users = await userService.getallUsers();
@@ -20,7 +18,6 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-// GET /api/users/:id — 200 single doc
 const getUserById = async (req, res) => {
     try {
         const user = await userService.getUserById(req.params.id);
@@ -31,7 +28,6 @@ const getUserById = async (req, res) => {
     }
 };
 
-// PUT /api/users/:id — 200 updated doc
 const updateUser = async (req, res) => {
     try {
         const user = await userService.updateUser(req.params.id, req.body);
@@ -42,7 +38,6 @@ const updateUser = async (req, res) => {
     }
 };
 
-// DELETE /api/users/:id — 200 with message
 const deleteUser = async (req, res) => {
     try {
         await userService.deleteUser(req.params.id);
@@ -58,4 +53,4 @@ module.exports = {
     getUserById,
     updateUser,
     deleteUser
-};
+};

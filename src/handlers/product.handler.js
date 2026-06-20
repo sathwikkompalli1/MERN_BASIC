@@ -1,6 +1,5 @@
 const svc = require('../services/product.service');
 
-// POST /api/products — 201
 exports.createProduct = async (req, res) => {
     try {
         const newProduct = await svc.createProduct(req.body);
@@ -10,7 +9,6 @@ exports.createProduct = async (req, res) => {
     }
 };
 
-// GET /api/products — 200 array
 exports.getAllProducts = async (req, res) => {
     try {
         const products = await svc.listProducts();
@@ -20,7 +18,6 @@ exports.getAllProducts = async (req, res) => {
     }
 };
 
-// GET /api/products/:id — 200 single doc
 exports.getProductById = async (req, res) => {
     try {
         const product = await svc.getProduct(req.params.id);
@@ -30,7 +27,6 @@ exports.getProductById = async (req, res) => {
     }
 };
 
-// PUT /api/products/:id — 200 updated doc
 exports.updateProduct = async (req, res) => {
     try {
         const updated = await svc.editProduct(req.params.id, req.body);
@@ -41,7 +37,6 @@ exports.updateProduct = async (req, res) => {
     }
 };
 
-// DELETE /api/products/:id — 200 with message
 exports.deleteProduct = async (req, res) => {
     try {
         await svc.deleteProduct(req.params.id);

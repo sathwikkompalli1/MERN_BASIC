@@ -1,12 +1,10 @@
 const mongodb = require('mongodb');
 const { getDB } = require('../config/db');
 
-// shorthand collection accessor
 function col() {
     return getDB().collection('products');
 }
 
-// Insert with createdAt + updatedAt timestamps
 async function addProduct(data) {
     const now = new Date();
     data.createdAt = now;
@@ -23,7 +21,6 @@ async function fetchOne(id) {
     return col().findOne({ _id: new mongodb.ObjectId(id) });
 }
 
-// Partial update — stamp updatedAt, return fresh document
 async function modifyProduct(id, changes) {
     changes.updatedAt = new Date();
     await col().updateOne(

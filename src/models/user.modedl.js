@@ -3,7 +3,6 @@ const { getDB } = require('../config/db');
 
 const Usercollection = () => getDB().collection('users');
 
-// Insert with createdAt + updatedAt timestamps
 const createUser = async (userData) => {
     const now = new Date();
     userData.createdAt = now;
@@ -20,7 +19,6 @@ const getUserById = async (id) => {
     return await Usercollection().findOne({ _id: new ObjectId(id) });
 };
 
-// Partial update — stamp updatedAt, return fresh document
 const updateUser = async (id, userData) => {
     userData.updatedAt = new Date();
     await Usercollection().updateOne({ _id: new ObjectId(id) }, { $set: userData });
@@ -37,4 +35,4 @@ module.exports = {
     getUserById,
     updateUser,
     deleteUser
-};
+};

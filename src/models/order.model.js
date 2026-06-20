@@ -3,7 +3,6 @@ const { getDB } = require('../config/db');
 
 const orders = () => getDB().collection('orders');
 
-// Insert a new order document with ISO timestamps
 const saveOrder = async (orderData) => {
     const now = new Date();
     orderData.status    = orderData.status || 'pending';
@@ -21,7 +20,6 @@ const getOrderById = async (id) => {
     return await orders().findOne({ _id: new ObjectId(id) });
 };
 
-// Partial update — always stamp updatedAt
 const patchOrder = async (id, fields) => {
     fields.updatedAt = new Date();
     await orders().updateOne(

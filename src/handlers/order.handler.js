@@ -1,6 +1,5 @@
 const orderService = require('../services/order.service');
 
-// POST /api/orders — 201 on success
 const createOrder = async (req, res) => {
     try {
         const result = await orderService.placeOrder(req.body);
@@ -10,7 +9,6 @@ const createOrder = async (req, res) => {
     }
 };
 
-// GET /api/orders — 200 array
 const getOrders = async (req, res) => {
     try {
         const orders = await orderService.getAllOrders();
@@ -20,7 +18,6 @@ const getOrders = async (req, res) => {
     }
 };
 
-// GET /api/orders/:id — 200 single doc
 const getOrder = async (req, res) => {
     try {
         const order = await orderService.findOrder(req.params.id);
@@ -30,7 +27,6 @@ const getOrder = async (req, res) => {
     }
 };
 
-// PUT /api/orders/:id — 200 updated doc
 const updateOrder = async (req, res) => {
     try {
         const updated = await orderService.updateOrder(req.params.id, req.body);
@@ -41,7 +37,6 @@ const updateOrder = async (req, res) => {
     }
 };
 
-// DELETE /api/orders/:id — 200 with message
 const deleteOrder = async (req, res) => {
     try {
         await orderService.cancelOrder(req.params.id);

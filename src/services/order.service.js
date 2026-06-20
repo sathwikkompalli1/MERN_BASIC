@@ -1,6 +1,5 @@
 const orderModel = require('../models/order.model');
 
-// Create a new order — userId, products[], and totalAmount are required
 const placeOrder = async (data) => {
     if (!data.userId) throw new Error('userId is required');
     if (!Array.isArray(data.products) || data.products.length === 0) {
@@ -9,7 +8,6 @@ const placeOrder = async (data) => {
     if (data.totalAmount == null || data.totalAmount < 0) {
         throw new Error('totalAmount is required and must be >= 0');
     }
-    // validate each product line
     data.products.forEach((item, i) => {
         if (!item.productId) throw new Error(`products[${i}].productId is required`);
         if (!item.quantity || item.quantity < 1) throw new Error(`products[${i}].quantity must be >= 1`);
@@ -26,9 +24,8 @@ const findOrder = async (id) => {
     return order;
 };
 
-// Update status, totalAmount, or products on an order
 const updateOrder = async (id, changes) => {
-    await findOrder(id); // guard — throws if not found
+    await findOrder(id);
     return orderModel.patchOrder(id, changes);
 };
 
